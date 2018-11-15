@@ -1,10 +1,51 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    var scripDB = Database.Open("Desk");
+    var itemSelect = "";
+
+    var db = Database.Open("MegaDesk");
+    var selectCommand = "SELECT * FROM DeskQuote";
+    var searchTerm = "";
+
+    if (!Request.QueryString["searchKeyword"].IsEmpty())
+    {
+        selectCommand = "SELECT * FROM DeskQuote WHERE Name = @0";
+        searchTerm = "%" + Request.QueryString["searchKeyword" + "%"];
+    }
+
+    var selectedData = db.Query(selectCommand, searchTerm);
+    var grid = new WebGrid(source: selectedData, rowsPerPage: 3);
+
+}
+<!DOCTYPE html>
 <html>
 <head>
+    <form method="get"></form>
     <title>Mega Desk</title>
 </head>
 <body>
+    <form method="get">
+        <div>
+            <label for=" SearchKeyword"> Customer Name:</label>
+            <input type="submit" name="searchKeyword" value="@Request.QueryString["searchKeyword"]"/>
+        </div>
+    </form>
     <h1>Mega Desk</h1>
-    <a href="~/AddQuote.cshtml">Get a Quote!</a>
+    <div>
+        @grid.GetHtml(
+   tableStyle:"grid",
+   headerStyle:"head",
+   alternatingRowStyle:"alt",
+   columns: grid.Columns(
+       grid.Column("Desk"),
+       grid.Column("Name"),
+       grid.Column("Size"),
+       grid.Column("Shipping"),
+       grid.Column("Material Cost"),
+       grid.Column("Cost"),
+       grid.Column("Material Number")
+       )
+   )
+</div>
+<a href="~/AddQuote.cshtml">Get a Quote!</a>
 </body>
 </html>
