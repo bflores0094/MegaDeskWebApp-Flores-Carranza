@@ -1,9 +1,94 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
+﻿@{ 
+    var Name = "";
+    var Depth = "";
+    var Width = "";
+    var Drawers = "";
+    var MaterialNum = "";
+    var Shipping = "";
+    var DeskId = "";
 
-</body>
-</html>
+    if (!IsPost)
+    {
+        if (!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt())
+        {
+            DeskId = Request.QueryString["ID"];
+            var db = Database.Open("MegaDesk");
+            var dbCommand = "SELECT * FROM DeskQuote WHERE ID = @0";
+            var row = db.QuerySingle(dbCommand, DeskId);
+
+            if (row != null)
+            {
+                Name = row.Name;
+                Depth = row.Depth;
+                Width = row.Width;
+                Drawers = row.Drawers;
+                MaterialNum = row.MaterialNum;
+                Shipping = row.Shipping;
+            }
+            else
+            {
+                Validation.AddFormError("No Desk Quote selected.");
+            }
+        }
+        else
+        {
+            Validation.AddFormError("No Desk Quote selected.");
+        }
+    }
+    if (IsPost)
+    {
+        Validation.RequireField("name, you must enter customer name");
+        Validation.RequireField("depth, size is required");
+        Validation.RequireField("width, size is required");
+        Validation.RequireField("drawers, number must be enter");
+        Validation.RequireField("shipping, days must be enter");
+        Validation.RequireField("deskId, No desk ID was submitted!");
+
+        Name = Request.Form["name"];
+        Depth = Request.Form["depth"];
+        Width = Request.Form["width"];
+        Drawers = Request.Form["drawers"];
+        Shipping = Request.Form["shipping"];
+        DeskId = Request.Form["deskId"];
+
+        if (Validation.IsValid())
+        {
+            var db = Database.Open("MegaDesk");
+            var updateCommand = "UPDATE DeskQuote SET Name=@0, Depth=@1, Width=@2, Drawers=@3, Shipping=@4, Id=@5";
+            db.Execute(updateCommand, Name, Depth, Width, Drawers, Shipping, DeskId);
+            Response.Redirect("~/Home");
+        }
+
+    }
+}
+<!DOCTYPE html>
+    <h2>Edit Desk Quote</h2>
+    @Html.ValidationSummary()
+    <form method="post">
+        <fieldset>
+            <legend>Desk Quote Information</legend>
+            <p>
+                <label for="name">Name:</label>
+                <input type="text" name="name" value="@Name" />
+            </p>
+            <p>
+                <label for="depth">Depth:</label>
+                <input type="text" name="depth" value="@Depth" />
+            </p>
+            <p>
+                <label for="width">Width:</label>
+                <input type="text" name="width" value="@Width" />
+            </p>
+            <p>
+                <label for="drawers">Drawers:</label>
+                <input type="text" name="drawers" value="@Drawers" />
+            </p>
+            <p>
+                <label for="shipping">Shipping:</label>
+                <input type="text" name="shipping" value="@Shipping" />
+            </p>
+            <input type="hidden" name="deskId" value="@DeskId" />
+            <p><input type="submit" name="buttonSubmit" value="Submit Changes"/></p>
+        </fieldset>
+    </form>
+    <p><a href="~/Home">Return to main Page</a></p>
