@@ -1,5 +1,5 @@
 ﻿@{ 
-    var scripDB = Database.Open("Desk");
+    var scripDB = Database.Open("MegaDesk");
     var itemSelect = "";
 
     var db = Database.Open("MegaDesk");
@@ -14,19 +14,18 @@
 
     var selectedData = db.Query(selectCommand, searchTerm);
     var grid = new WebGrid(source: selectedData, rowsPerPage: 3);
-
 }
+
 <!DOCTYPE html>
 <html>
 <head>
-    <form method="get"></form>
     <title>Mega Desk</title>
 </head>
 <body>
     <form method="get">
         <div>
             <label for=" SearchKeyword"> Customer Name:</label>
-            <input type="submit" name="searchKeyword" value="@Request.QueryString["searchKeyword"]"/>
+            <input type="text" name="searchKeyword" value="@Request.QueryString["searchKeyword"]"/>
         </div>
     </form>
     <h1>Mega Desk</h1>

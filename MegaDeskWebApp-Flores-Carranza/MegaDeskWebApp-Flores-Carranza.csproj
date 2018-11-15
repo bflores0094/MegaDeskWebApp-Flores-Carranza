@@ -116,6 +116,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Home.cshtml" />
+    <Content Include="EditDesk.cshtml" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
