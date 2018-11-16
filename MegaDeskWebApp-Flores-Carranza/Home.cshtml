@@ -36,7 +36,7 @@
        grid.Column(format: @<a href="~/EditDesk?id=@item.Id" class="edit">Edit</a>),
                  grid.Column("Desk"),
                  grid.Column(columnName: "Date", format: @<text>@item.Date_Added</text>),
-                 grid.Column(canSort: false, columnName:"Name"),
+                 grid.Column(canSort: true, columnName:"Name"),
                  grid.Column("Depth"),
                  grid.Column("Width"),
                  grid.Column("Shipping"),
