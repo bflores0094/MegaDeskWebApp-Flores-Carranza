@@ -1,10 +1,14 @@
 ﻿@{ 
     var scripDB = Database.Open("MegaDesk");
-    var itemSelect = "";
+    var sortTerm = "name";
 
     var db = Database.Open("MegaDesk");
     var selectCommand = "SELECT * FROM DeskQuote";
     var searchTerm = "";
+    if (!Request.QueryString["Date"].IsEmpty())
+    {
+        sortTerm = "date";
+    }
 
     if (!Request.QueryString["searchKeyword"].IsEmpty())
     {
@@ -13,12 +17,20 @@
     }
 
     var selectedData = db.Query(selectCommand, searchTerm);
-    var grid = new WebGrid(source: selectedData, rowsPerPage: 3);
+    var grid = new WebGrid(source: selectedData, defaultSort: sortTerm, rowsPerPage: 5);
 }
 
 <!DOCTYPE html>
 <h2>Mega Desk</h2>
     <form method="get">
+        <div>
+            <label class="radio=inline">
+                <input type="radio" name="Date" value="@Request.QueryString["Date"]"/> 
+            </label>
+            <label class="radio=inline">
+                <input type="radio" name="Name" value="@Request.QueryString["Name"]"/>
+                </label>  
+        </div>
         <div>
             <label for=" SearchKeyword"> Customer Name:</label>
             <input type="text" name="searchKeyword" 
@@ -33,29 +45,15 @@
    headerStyle:"head",
    alternatingRowStyle:"alt",
    columns: grid.Columns(
-       grid.Column(format: @<a href="~/EditDesk?id=@item.Id" class="edit">Edit</a>),
-                 grid.Column("Desk"),
+       grid.Column(format: @<a href="~/EditDesk?id=@item.Id" class="edit">Edit</a>), 
                  grid.Column(columnName: "Date", format: @<text>@item.Date_Added</text>),
                  grid.Column(canSort: true, columnName:"Name"),
-                 grid.Column("Depth"),
-                 grid.Column("Width"),
+                 grid.Column("size"),
                  grid.Column("Shipping"),
                  grid.Column("Drawers"),
                  grid.Column("Material Number"),
                  grid.Column("Total Cost"),
 
-                 grid.Column(
-                     canSort: false,
-                     columnName: "DeskQuote",
-                     format: @<text>@scripDB.QueryValue(
-                   "SELECT Content FROM DeskQuote WHERE name = @0 AND Depth = @1," +
-                   " AND Width = @2, AND Shipping = @3, AND Drawers =@4, AND Material Number = @5," +
-                   " AND Total Cost = @5", 
-                   item.Name, item.Depth, item.Width, item.Shipping,
-                   item.Drawers, item.MaterialNum, item.TotalCost)</text>
-
-                     ),
-       grid.Column(canSort: true, columnName: "Date"),
        grid.Column(format: @<a href="~/DeleteDesk?id=@item.id" class="delete">Delete</a>)
                           
         )
