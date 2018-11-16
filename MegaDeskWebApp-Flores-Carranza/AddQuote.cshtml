@@ -1,9 +1,74 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    IEnumerable<SelectListItem> matSelect = null;
+    IEnumerable<SelectListItem> shipSelect = null;
+
+    using (var db = WebMatrix.Data.Database.Open("MegaDesk"))
+    {
+
+        var matList = db.Query("SELECT * FROM SurfaceMaterial");
+        matSelect = matList.Select(m => new SelectListItem
+        {
+            Value = m.Id.ToString(),
+            Text = m.materialName,
+            Selected = m.Id.ToString() == Request.Form["surfaceMaterial"] ? true : false
+        });
+
+        var shipList = db.Query("SELECT * FROM Shipping");
+        shipSelect = shipList.Select(s => new SelectListItem
+        {
+            Value = s.Id.ToString(),
+            Text = s.days.ToString(),
+            Selected = s.Id.ToString() == Request.Form["shipping"] ? true : false
+        });
+    }
+
+    string name = "";
+    string width = "";
+    string height = "";
+    string drawers = "";
+    string material = "";
+    string shipping = "";
+
+    if (IsPost)
+    {
+        name = Request.Form["name"];
+        width = Request.Form["width"];
+        height = Request.Form["height"];
+        drawers = Request.Form["drawers"];
+        material = Request.Form["surfaceMaterial"];
+        shipping = Request.Form["shipping"];
+
+
+    }
+
+}
+<!DOCTYPE html>
 <html>
 <head>
     <title>Mega Desk</title>
 </head>
 <body>
     <h1>Add Quote</h1>
+    <form method="post">
+        <label for="name">Name</label>
+        <input name="name" value="@name" id="name" />
+
+        <label for="width">Width:</label>
+        <input name="width" value="@width" id="width" />
+
+        <label for="height">Height:</label>
+        <input name="height" value="@height" id="height" />
+
+        <label for="drawers">Drawers:</label>
+        <input name="drawers" value="@drawers" id="drawers" />
+
+        <label for="material">Material:</label>
+        @Html.DropDownList("surfaceMaterial", matSelect, Request.Form["surfaceMaterial"])
+
+        <label for="shipping">Shipping:</label>
+        @Html.DropDownList("shipping", shipSelect, Request.Form["shipping"])
+
+        <button type="submit" id="addQ">Enter</button>
+    </form>
 </body>
 </html>
