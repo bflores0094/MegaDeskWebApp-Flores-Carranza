@@ -40,14 +40,19 @@
                  grid.Column("Depth"),
                  grid.Column("Width"),
                  grid.Column("Shipping"),
-                 grid.Column("Material Cost"),
-                 grid.Column("Cost"),
+                 grid.Column("Drawers"),
                  grid.Column("Material Number"),
+                 grid.Column("Total Cost"),
 
                  grid.Column(
                      canSort: false,
                      columnName: "DeskQuote",
-                     format: @<text>@scripDB.QueryValue("SELECT Content FROM DeskQuote WHERE name = @0 AND Depth = @1, AND Width = @2, AND Drawers = @3, AND MaterialNum = @4, AND Shipping = @5", item.Name, item.Depth, item.Width, item.Drawers, item.MaterialNum, item.Shipping)</text>
+                     format: @<text>@scripDB.QueryValue(
+                   "SELECT Content FROM DeskQuote WHERE name = @0 AND Depth = @1," +
+                   " AND Width = @2, AND Shipping = @3, AND Drawers =@4, AND Material Number = @5," +
+                   " AND Total Cost = @5", 
+                   item.Name, item.Depth, item.Width, item.Shipping,
+                   item.Drawers, item.MaterialNum, item.TotalCost)</text>
 
                      ),
        grid.Column(canSort: false, columnName: "Name"),
