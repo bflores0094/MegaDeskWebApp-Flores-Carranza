@@ -1,0 +1,79 @@
+﻿@{
+    var Name = "";
+    var Depth = "";
+    var Width = "";
+    var Drawers = "";
+    var MaterialNum = "";
+    var Shipping = "";
+    var DeskId = "";
+
+    if (!IsPost)
+    {
+        if (!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt())
+        {
+            DeskId = Request.QueryString["ID"];
+            var db = Database.Open("MegaDesk");
+            var dbCommand = "SELECT * FROM DeskQuote WHERE ID = @0";
+            var row = db.QuerySingle(dbCommand, DeskId);
+            if (row != null)
+            {
+                Name = row.Name;
+                Depth = row.Depth;
+                Width = row.Width;
+                Drawers = row.Drawers;
+                MaterialNum = row.MaterialNum;
+                Shipping = row.Shipping;
+            }
+            else
+            {
+                Validation.AddFormError("No Desk Quote was found for that ID.");
+            }
+        }
+        else
+        {
+            Validation.AddFormError("No Desk Quote was found for that ID.");
+        }
+        if (IsPost && !Request["buttonDelete"].IsEmpty())
+        {
+            DeskId = Request.Form["deskId"];
+            var db = Database.Open("MegaDesk");
+            var deleteCommand = "DELETE FROM DeskQuote WHERE ID = @0";
+            db.Execute(deleteCommand, DeskId);
+            Response.Redirect("~/Home");
+        }
+    }
+   
+  }
+    
+            <!DOCTYPE html>
+                <h2>Delete Desk Quote</h2>
+                @Html.ValidationSummary()
+                <form method="post">
+                    <fieldset>
+                        <legend>Desk Quote Information</legend>
+                        <p>
+                            <span>Name</span>
+                            <span>@Name</span>
+                        </p>
+                        <p>
+                            <span>Depth</span>
+                            <span>@Depth</span>
+                        </p>
+                        <p>
+                            <span>Width</span>
+                            <span>@Width</span>
+                        </p>
+                        <p>
+                            <span>Drawers</span>
+                            <span>@Drawers</span>
+                        </p>
+                        <p>
+                            <span>Shipping</span>
+                            <span>@Shipping</span>
+                        </p>
+                        <input type="hidden" name="deskId" value="@DeskId" />
+                        <p><input type="submit" name="buttonDelete" value="Delete Desk Quote" /></p>
+                    </fieldset>
+                    <p><a href="~/Home">Return to Main Page</a></p>
+                </form>
+  

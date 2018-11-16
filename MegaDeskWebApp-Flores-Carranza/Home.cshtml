@@ -1,10 +1,65 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <title>Mega Desk</title>
-</head>
-<body>
+﻿@{ 
+    var scripDB = Database.Open("MegaDesk");
+    var itemSelect = "";
+
+    var db = Database.Open("MegaDesk");
+    var selectCommand = "SELECT * FROM DeskQuote";
+    var searchTerm = "";
+
+    if (!Request.QueryString["searchKeyword"].IsEmpty())
+    {
+        selectCommand = "SELECT * FROM DeskQuote WHERE Name = @0";
+        searchTerm = "%" + Request.QueryString["searchKeyword" + "%"];
+    }
+
+    var selectedData = db.Query(selectCommand, searchTerm);
+    var grid = new WebGrid(source: selectedData, rowsPerPage: 3);
+}
+
+<!DOCTYPE html>
+<h2>Mega Desk</h2>
+    <form method="get">
+        <div>
+            <label for=" SearchKeyword"> Customer Name:</label>
+            <input type="text" name="searchKeyword" 
+                   value="@Request.QueryString["searchKeyword"]"/>
+            <input type="submit" value="SearchKeyword"/><br />
+        </div>
+    </form>
     <h1>Mega Desk</h1>
-    <a href="~/AddQuote.cshtml">Get a Quote!</a>
-</body>
-</html>
+    <div>
+        @grid.GetHtml(
+   tableStyle:"grid",
+   headerStyle:"head",
+   alternatingRowStyle:"alt",
+   columns: grid.Columns(
+       grid.Column(format: @<a href="~/EditDesk?id=@item.Id" class="edit">Edit</a>),
+                 grid.Column("Desk"),
+                 grid.Column(columnName: "Date", format: @<text>@item.Date_Added</text>),
+                 grid.Column(canSort: true, columnName:"Name"),
+                 grid.Column("Depth"),
+                 grid.Column("Width"),
+                 grid.Column("Shipping"),
+                 grid.Column("Drawers"),
+                 grid.Column("Material Number"),
+                 grid.Column("Total Cost"),
+
+                 grid.Column(
+                     canSort: false,
+                     columnName: "DeskQuote",
+                     format: @<text>@scripDB.QueryValue(
+                   "SELECT Content FROM DeskQuote WHERE name = @0 AND Depth = @1," +
+                   " AND Width = @2, AND Shipping = @3, AND Drawers =@4, AND Material Number = @5," +
+                   " AND Total Cost = @5", 
+                   item.Name, item.Depth, item.Width, item.Shipping,
+                   item.Drawers, item.MaterialNum, item.TotalCost)</text>
+
+                     ),
+       grid.Column(canSort: true, columnName: "Date"),
+       grid.Column(format: @<a href="~/DeleteDesk?id=@item.id" class="delete">Delete</a>)
+                          
+        )
+        )
+                 
+    </div>
+<p><a href="~/AddQuote.cshtml">Get a Quote!</a></p>
