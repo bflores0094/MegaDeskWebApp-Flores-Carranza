@@ -1,74 +1,81 @@
 ﻿
 body {
     background-color: rgb(240, 240, 240);
+    display: grid;
+    grid-template-columns: 40px 50px auto 50px 40px;
+    grid-template-rows: 25% 100px auto;
 }
-
-
-
-#TopMenu {
-    padding-left: 15em;
-}
-
-#formInput {
-    width: 60%;
-    background-color: white;
-    padding: 2%;
-}
-
-
 
 h1 {
+    text-decoration: underline;
     text-align: center;
-    margin-bottom: 5%;
-    font-family: 'Permanent Marker', cursive;
 }
 
-
-
-#headLogo {
-    font-family: 'Permanent Marker', cursive;
-}
-
-
-
-.table {
-    margin: 5%;
-    width: 75%;
-}
-
-.input-group {
-    margin: 3%;
-    width: 75%;
-    padding-left: 17%;
-}
-
-
-
-.textGroup {
-    margin: 3%;
-    width: 75%;
-    padding-left: 17%;
-}
-
-#enterBtn {
-    margin-left: 20%;
-}
-
-
-
-#addBtn {
-    margin-left: 5%;
-}
-
-
-
-.validation-summary-errors {
-    color: red;
+.head {
+    grid-column-start: 2;
+    grid-column-end: five;
+    grid-row-start: row1-start ;
+    grid-row-end: 3;
+    background-color: white;
     font-weight: bold;
-    margin: 12px;
-    padding-left: 15%;
+    color: black;
+}
+#container {
+    min-height: 100%;
+    position: relative;
+    left: 10%;
 }
 
-.rounded {
-    margin-bottom: 3%;
+#header {
+    padding: 8px;
+    width: 80%;
+    background-color: rgb(240, 240, 240);
+    color: White;
 }
+
+#main {
+    width: 80%;
+    padding: 8px;
+    padding-bottom: 4em;
+    background-color: rgb(240, 240, 240);
+}
+
+#footer {
+    width: 80%;
+    height: 2em;
+    padding: 8px;
+    margin-top: -2em;
+    background-color: #;
+}
+
+.head {
+    background-color: rgb(218, 237, 247);
+    font-weight: bold;
+    color: #FFF;
+}
+
+.grid th, .grid td {
+    border: 1px solid #C0C0C0;
+    padding: 5px;
+}
+
+.alt {
+    background-color: rgb(218, 237, 247) ;
+    color: #000000;
+}
+
+.selected {
+    background-color: Yellow;
+    padding: 8px;
+    padding-bottom: 4em;
+    background-color: White;
+}
+
+span.caption {
+    width: 100px;
+}
+
+span.dataDisplay {
+    font-weight: bold;
+}
+

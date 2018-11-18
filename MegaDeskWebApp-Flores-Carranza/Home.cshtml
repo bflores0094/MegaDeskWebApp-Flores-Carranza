@@ -21,10 +21,17 @@
 }
 
 <!DOCTYPE html>
-<h2>Mega Desk</h2>
+<head>
+    <link rel="stylesheet" href="~/Design1.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+
+</head>
+<body>
+    <h1>Mega Desk</h1>
     <form method="get">
 
-        <div>
+
+        <div class="centerDiv">
             <label for=" SearchKeyword"> Customer Name:</label>
             <input type="text" name="searchKeyword"
                    value="@Request.QueryString["searchKeyword"]" />
@@ -39,7 +46,7 @@
             <input type="submit" value="SearchKeyword" /><br />
         </div>
     </form>
-    <h1>Mega Desk</h1>
+
     <div>
         @grid.GetHtml(
 tableStyle: "grid",
@@ -47,18 +54,19 @@ headerStyle: "head",
 alternatingRowStyle: "alt",
 columns: grid.Columns(
     grid.Column(format: @<a href="~/EditDesk?id=@item.Id" class="edit">Edit</a>),
-                       grid.Column(columnName: "Date"),
-                       grid.Column(canSort: true, columnName: "Name"),
-                       grid.Column("Size"),
-                       grid.Column("ShippingId"),
-                       grid.Column("MaterialId"),
-                       grid.Column("Cost"),
-                       grid.Column(format: @<a href="~/DeleteDesk?id=@item.id" class="delete">Delete</a>)
+                                grid.Column(columnName: "Date"),
+                                grid.Column(canSort: true, columnName: "Name"),
+                                grid.Column("Size"),
+                                grid.Column("ShippingId"),
+                                grid.Column("MaterialId"),
+                                grid.Column("Cost"),
+                                grid.Column(format: @<a href="~/DeleteDesk?id=@item.id" class="delete">Delete</a>)
 
-                  )
+                                )
 
-        )
-        
+                      )
+
 
     </div>
-<p><a href="~/AddQuote.cshtml">Get a Quote!</a></p>
+    <p><a href="~/AddQuote.cshtml">Get a Quote!</a></p>
+</body>
