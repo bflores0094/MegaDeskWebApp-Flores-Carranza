@@ -111,10 +111,14 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Desk.cs" />
+    <Compile Include="DeskQuote.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Home.cshtml" />
+    <Content Include="DeleteDesk.cshtml" />
+    <Content Include="EditDesk.cshtml" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

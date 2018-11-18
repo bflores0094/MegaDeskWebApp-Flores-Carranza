@@ -1,28 +1,34 @@
 ﻿@{
     var Name = "";
-    var Depth = "";
-    var Width = "";
-    var Drawers = "";
-    var MaterialNum = "";
+    var Size = "";
+    var Cost = "";
+    var MaterialName = "";
     var Shipping = "";
-    var DeskId = "";
+    var DeskQuoteId = "";
 
     if (!IsPost)
     {
         if (!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt())
         {
-            DeskId = Request.QueryString["ID"];
-            var db = Database.Open("MegaDesk");
+            DeskQuoteId = Request.QueryString["ID"];
+            var db = WebMatrix.Data.Database.Open("MegaDesk");
             var dbCommand = "SELECT * FROM DeskQuote WHERE ID = @0";
-            var row = db.QuerySingle(dbCommand, DeskId);
+            var row = db.QuerySingle(dbCommand, DeskQuoteId);
             if (row != null)
             {
-                Name = row.Name;
-                Depth = row.Depth;
-                Width = row.Width;
-                Drawers = row.Drawers;
-                MaterialNum = row.MaterialNum;
-                Shipping = row.Shipping;
+                var MatNum = row.MaterialId;
+                var matQ = "SELECT * FROM SurfaceMaterial WHERE Id = @0";
+                var MaterialRow = db.QuerySingle(matQ, MatNum);
+
+                var ShipNum = row.ShippingId;
+                var shipQ = "SELECT * FROM Shipping WHERE Id = @0";
+                var ShipRow = db.QuerySingle(shipQ, ShipNum);
+
+                Name = row.name;
+                Size = row.size.ToString();
+                Cost = row.cost.ToString();
+                MaterialName = MaterialRow.materialName;
+                Shipping = ShipRow.days.ToString();
             }
             else
             {
@@ -35,14 +41,14 @@
         }
         if (IsPost && !Request["buttonDelete"].IsEmpty())
         {
-            DeskId = Request.Form["deskId"];
-            var db = Database.Open("MegaDesk");
+            DeskQuoteId = Request.Form["DeskQuoteId"];
+            var db = WebMatrix.Data.Database.Open("MegaDesk");
             var deleteCommand = "DELETE FROM DeskQuote WHERE ID = @0";
-            db.Execute(deleteCommand, DeskId);
+            db.Execute(deleteCommand, DeskQuoteId);
             Response.Redirect("~/Home");
         }
     }
-   
+
   }
     
             <!DOCTYPE html>
@@ -56,22 +62,22 @@
                             <span>@Name</span>
                         </p>
                         <p>
-                            <span>Depth</span>
-                            <span>@Depth</span>
+                            <span>Size:</span>
+                            <span>@Size</span>
                         </p>
                         <p>
-                            <span>Width</span>
-                            <span>@Width</span>
+                            <span>Cost:</span>
+                            <span>@Cost</span>
                         </p>
                         <p>
-                            <span>Drawers</span>
-                            <span>@Drawers</span>
-                        </p>
-                        <p>
-                            <span>Shipping</span>
+                            <span>Shipping:</span>
                             <span>@Shipping</span>
                         </p>
-                        <input type="hidden" name="deskId" value="@DeskId" />
+                        <p>
+                            <span>Material:</span>
+                            <span>@MaterialName</span>
+                        </p>
+                        <input type="hidden" name="deskId" value="@DeskQuoteId" />
                         <p><input type="submit" name="buttonDelete" value="Delete Desk Quote" /></p>
                     </fieldset>
                     <p><a href="~/Home">Return to Main Page</a></p>

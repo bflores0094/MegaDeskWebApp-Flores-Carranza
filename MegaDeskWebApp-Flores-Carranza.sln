@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaDeskWebApp-Flores-Carranza", "MegaDeskWebApp-Flores-Carranza\MegaDeskWebApp-Flores-Carranza.csproj", "{D36EE07B-FDC1-40AE-A9E6-DBE0075F2506}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C27910E-FF8C-409A-844D-E8296F61F2A2}"
+	ProjectSection(SolutionItems) = preProject
+		..\MegaDesk-4-Brandon-Flores\MegaDesk-4-Brandon-Flores\DeskQuote.cs = ..\MegaDesk-4-Brandon-Flores\MegaDesk-4-Brandon-Flores\DeskQuote.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
