@@ -26,16 +26,17 @@
     <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
 
 </head>
+
 <body>
     <h1>Mega Desk</h1>
     <form method="get">
 
 
-        <div class="centerDiv">
+        <div class="container">
             <label for=" SearchKeyword"> Customer Name:</label>
             <input type="text" name="searchKeyword"
                    value="@Request.QueryString["searchKeyword"]" />
-            <div>
+            <div class="form-group">
                 <label class="radio=inline">
                     <input type="radio" name="Date" value="@Request.QueryString["Date"]" /> Date
                 </label>
@@ -47,7 +48,7 @@
         </div>
     </form>
 
-    <div>
+    <div class="table-cell">
         @grid.GetHtml(
 tableStyle: "grid",
 headerStyle: "head",
