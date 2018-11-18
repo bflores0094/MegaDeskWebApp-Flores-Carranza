@@ -1,0 +1,74 @@
+﻿
+body {
+    background-color: rgb(240, 240, 240);
+}
+
+
+
+#TopMenu {
+    padding-left: 15em;
+}
+
+#formInput {
+    width: 60%;
+    background-color: white;
+    padding: 2%;
+}
+
+
+
+h1 {
+    text-align: center;
+    margin-bottom: 5%;
+    font-family: 'Permanent Marker', cursive;
+}
+
+
+
+#headLogo {
+    font-family: 'Permanent Marker', cursive;
+}
+
+
+
+.table {
+    margin: 5%;
+    width: 75%;
+}
+
+.input-group {
+    margin: 3%;
+    width: 75%;
+    padding-left: 17%;
+}
+
+
+
+.textGroup {
+    margin: 3%;
+    width: 75%;
+    padding-left: 17%;
+}
+
+#enterBtn {
+    margin-left: 20%;
+}
+
+
+
+#addBtn {
+    margin-left: 5%;
+}
+
+
+
+.validation-summary-errors {
+    color: red;
+    font-weight: bold;
+    margin: 12px;
+    padding-left: 15%;
+}
+
+.rounded {
+    margin-bottom: 3%;
+}
