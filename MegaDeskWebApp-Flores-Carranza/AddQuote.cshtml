@@ -1,4 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+
+    IEnumerable<SelectListItem> matSelect = null;
+    var name = "";
+    var width = "";
+    var height = "";
+    var drawers = "";
+
+
+    using (var db = WebMatrix.Data.Database.Open("MegaDesk"))
+    {
+        var matData = db.Query("SELECT * FROM SurfaceMaterial");
+        matSelect = matData.Select(m => new SelectListItem(
+            m.materialName
+            ));
+    }
+   
+}
+<!DOCTYPE html>
 <html>
 <head>
     <title>Mega Desk</title>
@@ -21,8 +39,8 @@
         <label for="material">Material:</label>
         @Html.DropDownList("surfaceMaterial", matSelect, Request.Form["surfaceMaterial"])
 
-        <label for="shipping">Shipping:</label>
-        @Html.DropDownList("shipping", shipSelect, Request.Form["shipping"])
+        <label for="shipping">Shipping:</label><!--
+        //Html.DropDownList("shipping", shipSelect, Request.Form["shipping"]) -->
 
         <button type="submit" id="addQ">Enter</button>
     </form>
