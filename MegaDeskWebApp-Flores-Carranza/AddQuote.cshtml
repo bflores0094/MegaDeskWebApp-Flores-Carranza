@@ -1,28 +1,151 @@
 ﻿@{ 
 
     IEnumerable<SelectListItem> matSelect = null;
+    IEnumerable<SelectListItem> shipSelect = null;
+
     var name = "";
     var width = "";
     var height = "";
     var drawers = "";
+    var shipping = "";
+    var material = "";
+    int size;
+    var materialCost = "";
+    var shippingCost = "";
+    int cost;
+    var date = DateTime.Now.ToString("MM/dd/yyyy");
+    int shippingId;
+    int materialId;
+    int deskId;
+
+    Validation.RequireField("name", "Name is required.");
+    Validation.RequireField("width", "Width is required.");
+    Validation.RequireField("height", "Depth is required.");
+    Validation.RequireField("drawers", "Number of drawers is required.");
+    Validation.RequireField("Shipping", "Shipping is required.");
+    Validation.RequireField("surfaceMaterial", "Material is required.");
+
+
 
 
     using (var db = WebMatrix.Data.Database.Open("MegaDesk"))
     {
         var matData = db.Query("SELECT * FROM SurfaceMaterial");
-        matSelect = matData.Select(m => new SelectListItem(
-            m.materialName
-            ));
+        matSelect = matData.Select(m => new SelectListItem
+        {
+            Text = m.materialName,
+            Value = m.Id.ToString(),
+            Selected = m.Id.ToString() == Request.Form["surfaceMaterial"] ? true : false
+
+
+        });
+
+        var shipData = db.Query("SELECT * FROM Shipping");
+        shipSelect = shipData.Select(s => new SelectListItem
+        {
+            Text = s.days.ToString(),
+            Value = s.Id.ToString(),
+            Selected = s.Id.ToString() == Request.Form["Shipping"] ? true : false
+
+
+        });
     }
-   
+
+    if (IsPost)
+    {
+        name = Request.Form["name"];
+        width = Request.Form["width"];
+        height = Request.Form["height"];
+        drawers = Request.Form["drawers"];
+        shipping = Request.Form["Shipping"];
+        material = Request.Form["surfaceMaterial"];
+
+        if (Validation.IsValid())
+        {
+
+
+            using (var db = WebMatrix.Data.Database.Open("MegaDesk"))
+            {
+
+                var deskCmd = "INSERT INTO Desk (width, depth, drawers, MaterialId)" +
+                "VALUES (@0, @1, @2, @3)";
+                var deskIdQ = "SELECT Id FROM Desk WHERE width = @0 AND depth = @1 AND" +
+                            " drawers = @2 AND MaterialId = @3";
+                //try
+                //{
+                db.Execute(deskCmd, width, height, drawers, material);
+                deskId = 2;
+
+                System.Diagnostics.Debug.WriteLine(deskId);
+
+                size = Int32.Parse(width) * Int32.Parse(height);
+                var shipQ = "SELECT * FROM Shipping WHERE days = @0";
+                var shippingLogic = db.QuerySingle(shipQ, shipping);
+                if (size < 1000)
+                {
+                    shippingCost = shippingLogic.lessThan1000.ToString();
+                }
+                else if (size < 2000)
+                {
+                    shippingCost = shippingLogic.ThousandTo2000.ToString();
+
+                } else
+                {
+                    shippingCost = shippingLogic.moreThan2000.ToString();
+                }
+
+
+                var matQuery = "SELECT * FROM SurfaceMaterial WHERE ID = @0";
+                var materialRow = db.QuerySingle(matQuery, material);
+                materialCost = materialRow.materialCost.ToString();
+
+                if (size < 1000)
+                {
+                    cost = 200 + Int32.Parse(shippingCost) + Int32.Parse(materialCost);
+                } else
+                {
+                    cost = 200 + size + Int32.Parse(shippingCost) + Int32.Parse(materialCost);
+                }
+                //var shippingIdQ = "SELECT Id FROM Shipping WHERE days = @0";
+                //shippingId = db.QuerySingle(shippingIdQ, shipping);
+                //var materialIdQ = "SELECT Id FROM SurfaceMaterial WHERE days = @0";
+                //materialId = db.QuerySingle(materialIdQ, material);
+                System.Diagnostics.Debug.WriteLine(shippingCost + " " + materialCost);
+
+                var costQuery = "INSERT INTO DeskQuote (name, size, date, cost, ShippingId, DeskId, MaterialId) " +
+                "VALUES(@0, @1, @2, @3, @4, @5, @6)";
+                db.Execute(costQuery, name, size, date, cost, shipping, deskId, material);
+                Response.Redirect("~/Home");
+                // }
+                // catch
+                // {
+
+                // }
+            }
+        }
+    }
+
+
+
+
 }
 <!DOCTYPE html>
 <html>
 <head>
     <title>Mega Desk</title>
+    <style>
+        .validation-summary-errors {
+            color: red;
+            font-weight: bold;
+            margin: 12px;
+           
+        }
+    </style>
 </head>
 <body>
     <h1>Add Quote</h1>
+    <a href="~/Home.cshtml">Home</a>
+    @Html.ValidationSummary()
     <form method="post">
         <label for="name">Name</label>
         <input name="name" value="@name" id="name" />
@@ -39,8 +162,8 @@
         <label for="material">Material:</label>
         @Html.DropDownList("surfaceMaterial", matSelect, Request.Form["surfaceMaterial"])
 
-        <label for="shipping">Shipping:</label><!--
-        //Html.DropDownList("shipping", shipSelect, Request.Form["shipping"]) -->
+        <label for="shipping">Shipping:</label>
+        @Html.DropDownList("shipping", shipSelect, Request.Form["Shipping"])
 
         <button type="submit" id="addQ">Enter</button>
     </form>

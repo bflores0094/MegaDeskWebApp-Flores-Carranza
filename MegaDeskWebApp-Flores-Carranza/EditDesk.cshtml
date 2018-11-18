@@ -1,9 +1,9 @@
 ﻿@{ 
     var Name = "";
     var Size = "";
-    var Drawers = "";
-    var MaterialNum = "";
-    var Shipping = "";
+    var Cost = "";
+    var MaterialName = "";
+    var ShippingId = "";
     var DeskId = "";
 
     if (!IsPost)
@@ -11,17 +11,21 @@
         if (!Request.QueryString["ID"].IsEmpty() && Request.QueryString["ID"].IsInt())
         {
             DeskId = Request.QueryString["ID"];
-            var db = Database.Open("MegaDesk");
+            var db = WebMatrix.Data.Database.Open("MegaDesk");
             var dbCommand = "SELECT * FROM DeskQuote WHERE ID = @0";
             var row = db.QuerySingle(dbCommand, DeskId);
 
             if (row != null)
             {
+                var MatNum = row.MaterialId;
+                var matQ = "SELECT * FROM SurfaceMaterial WHERE Id = @0";
+                var MaterialRow = db.QuerySingle(matQ, MatNum);
+
                 Name = row.Name;
-                Size = row.Size;
-                Drawers = row.Drawers;
-                MaterialNum = row.MaterialNum;
-                Shipping = row.Shipping;
+                Size = row.Size.ToString();
+                Cost = row.cost.ToString();
+                ShippingId = row.ShippingId.ToString();
+                MaterialName = MaterialRow.materialName;
             }
             else
             {
@@ -35,25 +39,20 @@
     }
     if (IsPost)
     {
-        Validation.RequireField("name, you must enter customer name");
-        Validation.RequireField("depth, size is required");
-        Validation.RequireField("width, size is required");
-        Validation.RequireField("drawers, number must be enter");
-        Validation.RequireField("shipping, days must be enter");
-        Validation.RequireField("deskId, No desk ID was submitted!");
+        Validation.RequireField("Name, you must enter customer name");
+        Validation.RequireField("Size, size is required");
 
-        Name = Request.Form["name"];
-        Depth = Request.Form["depth"];
-        Width = Request.Form["width"];
-        Drawers = Request.Form["drawers"];
-        Shipping = Request.Form["shipping"];
-        DeskId = Request.Form["deskId"];
 
-        if (Validation.IsValid())
+        Name = Request.Form["Name"];
+        Size = Request.Form["Size"];
+        DeskId = Request.Form["DeskId"];
+
+
+        if (Validation.IsValid(Name, Size))
         {
-            var db = Database.Open("MegaDesk");
-            var updateCommand = "UPDATE DeskQuote SET Name=@0, Depth=@1, Width=@2, Drawers=@3, Shipping=@4, Id=@5";
-            db.Execute(updateCommand, Name, Depth, Width, Drawers, Shipping, DeskId);
+            var db = WebMatrix.Data.Database.Open("MegaDesk");
+            var updateCommand = "UPDATE DeskQuote SET name=@0, size=@1 WHERE Id = @2";
+            db.Execute(updateCommand, Name, Size, DeskId);
             Response.Redirect("~/Home");
         }
 
@@ -66,27 +65,27 @@
         <fieldset>
             <legend>Desk Quote Information</legend>
             <p>
-                <label for="name">Name:</label>
-                <input type="text" name="name" value="@Name" />
+                <label for="Name">Name:</label>
+                <input type="text" name="Name" value="@Name" />
             </p>
             <p>
-                <label for="depth">Depth:</label>
-                <input type="text" name="depth" value="@Depth" />
+                <label for="Size">Size:</label>
+                <input type="text" name="Size" value="@Size" />
             </p>
             <p>
-                <label for="width">Width:</label>
-                <input type="text" name="width" value="@Width" />
-            </p>
-            <p>
-                <label for="drawers">Drawers:</label>
-                <input type="text" name="drawers" value="@Drawers" />
+                <label for="Cost">Cost:</label>
+                <input type="text" name="Cost" value="@Cost" disabled/>
             </p>
             <p>
                 <label for="shipping">Shipping:</label>
-                <input type="text" name="shipping" value="@Shipping" />
+                <input type="text" name="ShippingId" value="@ShippingId" disabled />
+            </p>
+            <p>
+                <label for="material">Material:</label>
+                <input type="text" name="MaterialName" value="@MaterialName" disabled />
             </p>
             <input type="hidden" name="deskId" value="@DeskId" />
-            <p><input type="submit" name="buttonSubmit" value="Submit Changes"/></p>
+            <p><input type="submit" name="buttonSubmit" value="Submit Changes" /></p>
         </fieldset>
     </form>
     <p><a href="~/Home">Return to main Page</a></p>
