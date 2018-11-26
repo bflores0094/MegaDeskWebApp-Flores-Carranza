@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     var Name = "";
     var Size = "";
     var Cost = "";
@@ -59,6 +59,18 @@
     }
 }
 <!DOCTYPE html>
+<html>
+<head>
+    <title>Mega Desk</title>
+    <style>
+        .validation-summary-errors {
+            color: red;
+            font-weight: bold;
+            margin: 12px;
+        }
+    </style>
+</head>
+<body>
     <h2>Edit Desk Quote</h2>
     @Html.ValidationSummary()
     <form method="post">
@@ -74,7 +86,7 @@
             </p>
             <p>
                 <label for="Cost">Cost:</label>
-                <input type="text" name="Cost" value="@Cost" disabled/>
+                <input type="text" name="Cost" value="@Cost" disabled />
             </p>
             <p>
                 <label for="shipping">Shipping:</label>
@@ -89,3 +101,5 @@
         </fieldset>
     </form>
     <p><a href="~/Home">Return to main Page</a></p>
+    </body>
+</html>

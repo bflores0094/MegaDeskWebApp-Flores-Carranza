@@ -52,34 +52,47 @@
   }
     
             <!DOCTYPE html>
-                <h2>Delete Desk Quote</h2>
-                @Html.ValidationSummary()
-                <form method="post">
-                    <fieldset>
-                        <legend>Desk Quote Information</legend>
-                        <p>
-                            <span>Name</span>
-                            <span>@Name</span>
-                        </p>
-                        <p>
-                            <span>Size:</span>
-                            <span>@Size</span>
-                        </p>
-                        <p>
-                            <span>Cost:</span>
-                            <span>@Cost</span>
-                        </p>
-                        <p>
-                            <span>Shipping:</span>
-                            <span>@Shipping</span>
-                        </p>
-                        <p>
-                            <span>Material:</span>
-                            <span>@MaterialName</span>
-                        </p>
-                        <input type="hidden" name="deskId" value="@DeskQuoteId" />
-                        <p><input type="submit" name="buttonDelete" value="Delete Desk Quote" /></p>
-                    </fieldset>
-                    <p><a href="~/Home">Return to Main Page</a></p>
-                </form>
-  
+            <html>
+            <head>
+                <title>Mega Desk</title>
+                <style>
+                    .validation-summary-errors {
+                        color: red;
+                        font-weight: bold;
+                        margin: 12px;
+                    }
+                </style>
+            </head>
+<body>
+            <h2>Delete Desk Quote</h2>
+            @Html.ValidationSummary()
+            <form method="post">
+                <fieldset>
+                    <legend>Desk Quote Information</legend>
+                    <p>
+                        <span>Name</span>
+                        <span>@Name</span>
+                    </p>
+                    <p>
+                        <span>Size:</span>
+                        <span>@Size</span>
+                    </p>
+                    <p>
+                        <span>Cost:</span>
+                        <span>@Cost</span>
+                    </p>
+                    <p>
+                        <span>Shipping:</span>
+                        <span>@Shipping</span>
+                    </p>
+                    <p>
+                        <span>Material:</span>
+                        <span>@MaterialName</span>
+                    </p>
+                    <input type="hidden" name="deskId" value="@DeskQuoteId" />
+                    <p><input type="submit" name="buttonDelete" value="Delete Desk Quote" /></p>
+                </fieldset>
+                <p><a href="~/Home">Return to Main Page</a></p>
+            </form>
+            </body>
+            </html>

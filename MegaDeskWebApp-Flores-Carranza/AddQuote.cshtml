@@ -79,7 +79,7 @@
                 System.Diagnostics.Debug.WriteLine(deskId);
 
                 size = Int32.Parse(width) * Int32.Parse(height);
-                var shipQ = "SELECT * FROM Shipping WHERE days = @0";
+                var shipQ = "SELECT * FROM Shipping WHERE Id = @0";
                 var shippingLogic = db.QuerySingle(shipQ, shipping);
                 if (size < 1000)
                 {

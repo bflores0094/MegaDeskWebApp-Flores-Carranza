@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@{
     var scripDB = WebMatrix.Data.Database.Open("MegaDesk");
     var sortTerm = "name";
 
@@ -12,8 +12,8 @@
 
     if (!Request.QueryString["searchKeyword"].IsEmpty())
     {
-        selectCommand = "SELECT * FROM DeskQuote WHERE Name = @0";
-        searchTerm = "%" + Request.QueryString["searchKeyword" + "%"];
+        selectCommand = "SELECT * FROM DeskQuote WHERE name = @0";
+        searchTerm = "%" + Request.QueryString["searchKeyword"] + "%";
     }
 
     var selectedData = db.Query(selectCommand, searchTerm);
@@ -21,7 +21,13 @@
 }
 
 <!DOCTYPE html>
-<h2>Mega Desk</h2>
+<html>
+<head>
+    <title>Mega Desk</title>
+
+</head>
+<body>
+    <h2>Mega Desk</h2>
     <form method="get">
 
         <div>
@@ -47,18 +53,20 @@ headerStyle: "head",
 alternatingRowStyle: "alt",
 columns: grid.Columns(
     grid.Column(format: @<a href="~/EditDesk?id=@item.Id" class="edit">Edit</a>),
-                       grid.Column(columnName: "Date"),
-                       grid.Column(canSort: true, columnName: "Name"),
-                       grid.Column("Size"),
-                       grid.Column("ShippingId"),
-                       grid.Column("MaterialId"),
-                       grid.Column("Cost"),
-                       grid.Column(format: @<a href="~/DeleteDesk?id=@item.id" class="delete">Delete</a>)
+                                grid.Column(columnName: "Date"),
+                                grid.Column(canSort: true, columnName: "Name"),
+                                grid.Column("Size"),
+                                grid.Column("ShippingId"),
+                                grid.Column("MaterialId"),
+                                grid.Column("Cost"),
+                                grid.Column(format: @<a href="~/DeleteDesk?id=@item.id" class="delete">Delete</a>)
 
-                  )
+                                )
 
-        )
-        
+                      )
+
 
     </div>
-<p><a href="~/AddQuote.cshtml">Get a Quote!</a></p>
+    <p><a href="~/AddQuote.cshtml">Get a Quote!</a></p>
+    </body>
+</html>
