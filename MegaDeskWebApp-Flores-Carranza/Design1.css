@@ -1,0 +1,130 @@
+﻿html {
+    height: 100%;
+}
+
+body {
+    height: 60%;
+    font-family: 'Trebuchet MS', Georgia, 'Times New Roman', Georgia, Georgia;
+    line-height: 1.6em;
+    padding-left: 170px;
+    padding-right: 100px;
+    border: 5px hidden;
+    background-repeat: repeat;
+    background-position: center;
+
+}
+
+
+h1 {
+    font-size: 1.6em;
+    text-decoration: underline;
+    text-align:center;
+}
+
+h2 {
+    font-size: 1.4em;
+}
+
+.container{
+    width: 30px;
+    height:50px;
+    border:2px;
+    padding:10px;
+    display: -webkit-flex;
+    display:flex;
+    -webkit-flex-wrap:wrap;
+    flex-wrap: wrap;
+    -webkit-align-content:center;
+    align-content:center;
+}
+
+.form-group {
+    padding: 5px;
+   margin:1px;
+}
+
+
+.header {
+    padding: 8px;
+    width: 80%;
+    background-color: #edfdfe;
+    color: white;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+#main {
+    width: 80%;
+    padding: 8px;
+    padding-bottom: 4em;
+    background-color:#000000;
+}
+
+#footer {
+    width: 80%;
+    height: 2em;
+    padding: 8px;
+    margin-top: -2em;
+    background-color:;
+}
+
+.head {
+    background-color: #b2b8db;
+    font-weight: bold;
+    color: #FFF;
+
+}
+
+.grid th, .grid td {
+    border: 1px solid black;
+    padding: 5px;
+    display: -webkit-flex;
+    -webkit-align-content: center;
+    align-content: center;
+    display:initial;
+  
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.title {
+    text-decoration: underline;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+.validation-summary-errors {
+    color: red;
+    font-weight: bold;
+    margin: 12px;
+}
+
+.alt {
+    background-color: #b2b8db;
+    color: #000000;
+}
+
+.selected {
+    background-color: Yellow;
+    padding: 8px;
+    padding-bottom: 4em;
+    background-color: White;
+}
+
+span.caption {
+    width: 100px;
+}
+
+span.dataDisplay {
+    font-weight: bold;
+}
+
+a {
+
+}
